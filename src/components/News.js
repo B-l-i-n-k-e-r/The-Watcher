@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import NewsItems from "./NewsItems"; // Make sure the file name matches
+import NewsItems from "./NewsItems";
 import Spinner from "./Spinner";
 
 export default class News extends Component {

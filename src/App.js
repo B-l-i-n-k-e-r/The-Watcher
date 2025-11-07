@@ -37,6 +37,10 @@ function App() {
             element={<News key="general" pageSize={pageSize} country="in" category="general" />}
           />
           <Route
+            path="/politics"
+            element={<News key="politics" pageSize={pageSize} country="in" category="politics" />}
+          />
+          <Route
             path="/business"
             element={<News key="business" pageSize={pageSize} country="in" category="business" />}
           />
