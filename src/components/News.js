@@ -1,121 +1,124 @@
 import React, { Component } from "react";
-import NewsItems from "./Newsitems";
+import NewsItems from "./NewsItems"; // Make sure the file name matches
 import Spinner from "./Spinner";
-import PropTypes from 'prop-types'
 
-export class News extends Component {
-
-
-  //loading center 
-  
-
-  static defaultProps = {
-    country : 'in',
-    pageSize: 6,
-    category: 'general',
-
-
-  }
-
-  
-
-  static propTypes = {
-    country: PropTypes.string,
-    pageSize: PropTypes.number,
-    category: PropTypes.string,
-
-
-  }
-
-  constructor() {
-    super();
+export default class News extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       articles: [],
       loading: false,
-      page: 1
+      searchQuery: "",
+      category: "general", // default category
     };
-
-
   }
 
-  async componentDidMount() {
-    let url= `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=722229a3f08c4949917f1298ae434ae1&pageSize=${this.props.pageSize}`
-    this.setState({loading: true})
-    let data = await fetch(url)
-    let parsedData = await data.json()
-    this.setState({
-      articles: parsedData.articles,
-      totalResults: parsedData.totalResults,
-      loading: false,
-      
-    })
-    
-    
-    
+  componentDidMount() {
+    this.fetchNews();
   }
 
-  handlePrevButton= async () => {
-    let url= `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=722229a3f08c4949917f1298ae434ae1&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`
-    this.setState({loading: true})
-    let data = await fetch(url)
-    let parsedData = await data.json()
-    
-    this.setState({
-      page: this.state.page - 1,
-      articles: parsedData.articles,
-      loading: false
-    })   
+  componentDidUpdate(prevProps) {
+    // If the category prop changes (from navbar), fetch new news
+    if (prevProps.category !== this.props.category) {
+      this.setState({ category: this.props.category || "general" }, () =>
+        this.fetchNews()
+      );
+    }
   }
 
-  handleNextButton = async () => {
-    
-      let url= `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=722229a3f08c4949917f1298ae434ae1&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`
-      this.setState({ loading: true})
-      let data = await fetch(url)
-      let parsedData = await data.json()
-  
-      this.setState({
-          page: this.state.page + 1,
-        articles: parsedData.articles,
-        loading: false
-      })
-    
+  fetchNews = async (query = "") => {
+    this.setState({ loading: true });
+    const apiKey = process.env.REACT_APP_NEWS_API_KEY;
 
-    
-  }  
+    if (!apiKey) {
+      console.error("API key is missing! Set REACT_APP_NEWS_API_KEY in .env");
+      this.setState({ loading: false });
+      return;
+    }
 
-    
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.state.category}&apiKey=${apiKey}`;
+    if (query) {
+      url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+        query
+      )}&apiKey=${apiKey}`;
+    }
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.status !== "ok") {
+        console.error("Error fetching news:", data);
+        this.setState({ articles: [], loading: false });
+        return;
+      }
+
+      this.setState({ articles: data.articles || [], loading: false });
+    } catch (err) {
+      console.error("Error fetching news:", err);
+      this.setState({ loading: false });
+    }
+  };
+
+  handleSearchChange = (e) => this.setState({ searchQuery: e.target.value });
+
+  handleSearchSubmit = (e) => {
+    e.preventDefault();
+    this.fetchNews(this.state.searchQuery.trim());
+  };
+
   render() {
-    
+    const { articles, loading, searchQuery } = this.state;
+
     return (
-      <div className="container">
-        <h1 className="text-center" style={{margin: "35px"}}>NewsApp </h1>
-        <div className="rounded mx-auto d-block">{this.state.loading && <Spinner/>}</div>
-         
-        <div className="row ">
-        {!this.state.loading && this.state.articles.map((element) => {
-          return <div className="col-md-4 my-2 " key={element.url}>
-          <NewsItems
-            title={element.title}
-            description={element.description}
-            newsUrl={element.url}
-            imgUrl={element.urlToImage}
+      <div className="container app-container">
+        {/* Search Form */}
+        <form
+          onSubmit={this.handleSearchSubmit}
+          className="d-flex justify-content-center mb-4"
+        >
+          <input
+            type="text"
+            className="form-control w-50"
+            placeholder="Search for news..."
+            value={searchQuery}
+            onChange={this.handleSearchChange}
           />
-          
+          <button className="btn btn-primary ms-2" type="submit">
+            Search
+          </button>
+        </form>
+
+        <h2 className="text-center mb-4 text-capitalize">
+          {this.state.category} News
+        </h2>
+
+        {/* Loading Spinner */}
+        {loading && <Spinner />}
+
+        {/* News Articles */}
+        <div className="row">
+          {!loading &&
+            articles.slice(0, 12).map((article, index) => (
+              <NewsItems
+                key={index}
+                title={article.title}
+                description={article.description}
+                imgUrl={article.urlToImage}
+                newsUrl={article.url}
+                author={article.author}
+                date={new Date(article.publishedAt).toLocaleString()}
+              />
+            ))}
         </div>
 
-        })}
-
-         {/* next previous buttons */}
-        </div>
-            <div className="container d-flex justify-content-between">
-            <button disabled={this.state.page<=1} type="button" onClick={this.handlePrevButton} className="btn btn-dark">&larr; Previous</button>
-            <button disabled= {this.state.page + 1 > Math.ceil(this.state.totalResults/this.props.pageSize)} type="button" onClick={this.handleNextButton} className="btn btn-dark">Next &rarr;</button>
-          </div> 
-          
+        {/* No Articles Found */}
+        {!loading && articles.length === 0 && (
+          <p className="text-center text-muted mt-5">
+            No news articles found. Try searching for something else.
+          </p>
+        )}
       </div>
     );
   }
 }
-
-export default News;

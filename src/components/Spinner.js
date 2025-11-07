@@ -1,25 +1,22 @@
-import React, { Component } from 'react'
-import loading from './spin.gif'
+import React, { Component } from "react";
+import loading from "./spin.gif";
 
 export default class Spinner extends Component {
   render() {
-
-    const loadingStyle =  ({
-    
+    const loadingStyle = {
       display: "block",
-      marginLeft: "auto",
-      marginRight: "auto",
-      
-    
-  })
-    return (
+      margin: "auto",
+      width: "70px", // ✅ optional: control spinner size
+    };
 
-      
-      <div>
-          <img style={loadingStyle} src={loading} alt="loding" />
+    return (
+      <div className="text-center my-3">
+        <img
+          style={loadingStyle}
+          src={loading}
+          alt="Loading..."
+        />
       </div>
-    )
+    );
   }
 }
-
-
