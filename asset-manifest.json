@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/The-Watcher/static/css/main.6c6c7a0c.css",
+    "main.js": "/The-Watcher/static/js/main.09ced77f.js",
+    "static/js/453.32250b38.chunk.js": "/The-Watcher/static/js/453.32250b38.chunk.js",
+    "static/media/a.jpg": "/The-Watcher/static/media/a.cdc76098f37e0c632e5e.jpg",
+    "static/media/news.jpg": "/The-Watcher/static/media/news.dbf18f91151fa2584241.jpg",
+    "static/media/dp.jpeg": "/The-Watcher/static/media/dp.16ae699412d08b83638c.jpeg",
+    "static/media/spin.gif": "/The-Watcher/static/media/spin.9c7cd866c7fa25391ccd.gif",
+    "index.html": "/The-Watcher/index.html",
+    "main.6c6c7a0c.css.map": "/The-Watcher/static/css/main.6c6c7a0c.css.map",
+    "main.09ced77f.js.map": "/The-Watcher/static/js/main.09ced77f.js.map",
+    "453.32250b38.chunk.js.map": "/The-Watcher/static/js/453.32250b38.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6c6c7a0c.css",
+    "static/js/main.09ced77f.js"
+  ]
+}
