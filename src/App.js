@@ -23,7 +23,7 @@ function App() {
             element={
               <>
                 <FeaturedArticles />
-                <News pageSize={pageSize} country="in" category="general" />
+                <News key="home" pageSize={pageSize} category="world" />
               </>
             }
           />
@@ -34,35 +34,35 @@ function App() {
           {/* Categories */}
           <Route
             path="/general"
-            element={<News key="general" pageSize={pageSize} country="in" category="general" />}
+            element={<News key="general" pageSize={pageSize} category="world" />}
           />
           <Route
             path="/politics"
-            element={<News key="politics" pageSize={pageSize} country="in" category="politics" />}
+            element={<News key="politics" pageSize={pageSize} category="nation" />}
           />
           <Route
             path="/business"
-            element={<News key="business" pageSize={pageSize} country="in" category="business" />}
+            element={<News key="business" pageSize={pageSize} category="business" />}
           />
           <Route
             path="/entertainment"
-            element={<News key="entertainment" pageSize={pageSize} country="in" category="entertainment" />}
+            element={<News key="entertainment" pageSize={pageSize} category="entertainment" />}
           />
           <Route
             path="/health"
-            element={<News key="health" pageSize={pageSize} country="in" category="health" />}
+            element={<News key="health" pageSize={pageSize} category="health" />}
           />
           <Route
             path="/science"
-            element={<News key="science" pageSize={pageSize} country="in" category="science" />}
+            element={<News key="science" pageSize={pageSize} category="science" />}
           />
           <Route
             path="/sports"
-            element={<News key="sports" pageSize={pageSize} country="in" category="sports" />}
+            element={<News key="sports" pageSize={pageSize} category="sports" />}
           />
           <Route
             path="/technology"
-            element={<News key="technology" pageSize={pageSize} country="in" category="technology" />}
+            element={<News key="technology" pageSize={pageSize} category="technology" />}
           />
         </Routes>
       </main>

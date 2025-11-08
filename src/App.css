@@ -1,15 +1,18 @@
+/* ========== GLOBAL STYLING ========== */
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
-  background-image: url("./assets/news.jpg"); /* ✅ Correct syntax */
+  font-family: "Poppins", "Ink Free", sans-serif;
+  background-image: url("./assets/news.jpg");
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
-  color: #222;
+  color: #f4f4f4;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
-/* 🌙 Optional dark overlay for readability */
+/* Overlay for contrast */
 body::before {
   content: "";
   position: fixed;
@@ -17,130 +20,140 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(20, 10, 50, 0.55);
   z-index: -1;
 }
 
 .app-container {
-  margin-top: 70px;
+  margin-top: 80px;
   padding: 20px;
 }
 
-/* 🦶 Footer */
+/* ========== FOOTER ========== */
 .footer {
-  background: #111;
-  color: #fff;
+  background: rgba(15, 20, 40, 0.9);
+  color: #ddd;
   text-align: center;
-  padding: 1rem;
-  margin-top: 40px;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
+  padding: 1.2rem;
+  margin-top: 50px;
+  font-size: 0.95rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
 }
 
-/* ✨ Frosted-glass News Card */
+/* ========== NEWS CARD ========== */
 .news-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.news-card:hover {
-  transform: translateY(-5px);
+  color: #fff;
 }
 
-.news-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.news-content {
-  padding: 15px;
-}
-
-.news-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.news-description {
-  color: #666;
-  font-size: 0.9rem;
-  margin-top: 5px;
-}
-
-/* 🌅 Hero Section Styling */
-.hero-section {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-}
-.hero-section img {
-  transition: transform 0.4s ease-in-out;
-  border-radius: 12px;
-}
-.hero-section:hover img {
-  transform: scale(1.03);
-}
-.hero-overlay {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-}
-.hero-overlay a:hover {
-  background-color: #0dcaf0 !important;
-  color: #000 !important;
-}
-
-/* 📰 News Grid Enhancements */
-.news-card {
-  border-radius: 10px;
-  transition: all 0.3s ease-in-out;
-  background: #fff;
-}
 .news-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
-.news-card:hover img {
+
+/* News image */
+.news-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.news-card:hover .news-image {
   transform: scale(1.05);
 }
 
-/* 🌗 Dark Mode Ready */
-body.dark-mode .news-card {
-  background: #181818;
-  color: #eaeaea;
+/* Card text */
+.news-content {
+  padding: 16px;
 }
-body.dark-mode .news-card:hover {
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+.news-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffcc00;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
-body.dark-mode .footer {
-  background: #000;
+.news-description {
+  color: #d1d1d1;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  line-height: 1.5;
 }
 
-/* 🏷️ Headings */
+/* ========== HEADINGS ========== */
 .section-title {
   font-weight: 700;
   color: #fff;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  letter-spacing: 1.2px;
+  text-align: center;
+  margin-bottom: 25px;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
 
 .section-subtitle {
   font-weight: 600;
-  color: #f8f8f8;
-  margin-top: 30px;
+  color: #ff66ff;
+  margin-top: 20px;
+  text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* 🔍 Search bar adjustments */
+/* ========== SEARCH BAR ========== */
 .navbar .form-control {
-  border-radius: 20px;
-  border: none;
+  border-radius: 25px;
+  border: 1px solid #ff66ff;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
   padding-left: 15px;
 }
+.navbar .form-control::placeholder {
+  color: #aaa;
+}
 .navbar .btn-outline-success {
-  border-radius: 20px;
+  border-radius: 25px;
+  border-color: #ff66ff;
+  color: #ff66ff;
+  transition: all 0.3s ease;
+}
+.navbar .btn-outline-success:hover {
+  background-color: #ff66ff;
+  color: #000;
+}
+
+/* ========== DARK MODE SUPPORT ========== */
+body.dark-mode {
+  background-color: #0b0b12;
+  color: #e0e0e0;
+}
+body.dark-mode .news-card {
+  background: rgba(40, 40, 60, 0.8);
+}
+body.dark-mode .footer {
+  background: rgba(10, 10, 25, 0.95);
+}
+
+/* ========== MEDIA QUERIES ========== */
+@media (max-width: 768px) {
+  .app-container {
+    margin-top: 60px;
+    padding: 10px;
+  }
+
+  .news-image {
+    height: 180px;
+  }
+
+  .news-title {
+    font-size: 1rem;
+  }
+
+  .news-description {
+    font-size: 0.85rem;
+  }
 }

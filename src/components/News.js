@@ -9,7 +9,7 @@ export default class News extends Component {
       articles: [],
       loading: false,
       searchQuery: "",
-      category: "general", // default category
+      category: this.props.category || "general",
     };
   }
 
@@ -18,7 +18,6 @@ export default class News extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // If the category prop changes (from navbar), fetch new news
     if (prevProps.category !== this.props.category) {
       this.setState({ category: this.props.category || "general" }, () =>
         this.fetchNews()
@@ -28,35 +27,45 @@ export default class News extends Component {
 
   fetchNews = async (query = "") => {
     this.setState({ loading: true });
-    const apiKey = process.env.REACT_APP_NEWS_API_KEY;
+    const apiKey = process.env.REACT_APP_GNEWS_API_KEY;
 
     if (!apiKey) {
-      console.error("API key is missing! Set REACT_APP_NEWS_API_KEY in .env");
+      console.error("API key is missing! Set REACT_APP_GNEWS_API_KEY in .env");
       this.setState({ loading: false });
       return;
     }
 
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.state.category}&apiKey=${apiKey}`;
-    if (query) {
-      url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
-        query
-      )}&apiKey=${apiKey}`;
-    }
+    let url = query
+      ? `https://gnews.io/api/v4/search?q=${encodeURIComponent(
+          query
+        )}&lang=en&country=us&max=12&apikey=${apiKey}`
+      : `https://gnews.io/api/v4/top-headlines?category=${
+          this.state.category
+        }&lang=en&country=us&max=12&apikey=${apiKey}`;
 
     try {
       const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
 
-      if (data.status !== "ok") {
-        console.error("Error fetching news:", data);
+      if (!data.articles || data.articles.length === 0) {
         this.setState({ articles: [], loading: false });
         return;
       }
 
-      this.setState({ articles: data.articles || [], loading: false });
+      const formattedArticles = data.articles.map((article) => ({
+        title: article.title,
+        description: article.description,
+        imgUrl: article.image || "https://via.placeholder.com/400x200",
+        newsUrl: article.url,
+        author: article.source.name || "Unknown",
+        date: new Date(article.publishedAt).toLocaleString(),
+      }));
+
+      this.setState({ articles: formattedArticles, loading: false });
     } catch (err) {
       console.error("Error fetching news:", err);
-      this.setState({ loading: false });
+      this.setState({ articles: [], loading: false });
     }
   };
 
@@ -93,26 +102,23 @@ export default class News extends Component {
           {this.state.category} News
         </h2>
 
-        {/* Loading Spinner */}
         {loading && <Spinner />}
 
-        {/* News Articles */}
         <div className="row">
           {!loading &&
-            articles.slice(0, 12).map((article, index) => (
+            articles.map((article, index) => (
               <NewsItems
                 key={index}
                 title={article.title}
                 description={article.description}
-                imgUrl={article.urlToImage}
-                newsUrl={article.url}
+                imgUrl={article.imgUrl}
+                newsUrl={article.newsUrl}
                 author={article.author}
-                date={new Date(article.publishedAt).toLocaleString()}
+                date={article.date}
               />
             ))}
         </div>
 
-        {/* No Articles Found */}
         {!loading && articles.length === 0 && (
           <p className="text-center text-muted mt-5">
             No news articles found. Try searching for something else.
@@ -121,4 +127,4 @@ export default class News extends Component {
       </div>
     );
   }
-}
+};
